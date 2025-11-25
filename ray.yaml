@@ -1,0 +1,47 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: Rule
+log-level: info
+
+proxies:
+  - name: "Hug-VLESS"
+    type: vless
+    server: kingrayking-rayspace.hf.space
+    port: 443
+    uuid: 02ceef15-29a2-d002-546f-e3104186bb51
+    udp: true
+    tls: true
+    servername: kingrayking-rayspace.hf.space
+    network: ws
+    client-fingerprint: chrome
+    ws-opts:
+      path: /02ceef15
+      headers:
+        Host: kingrayking-rayspace.hf.space
+
+  - name: "Hug-Trojan"
+    type: trojan
+    server: kingrayking-rayspace.hf.space
+    port: 443
+    password: 02ceef15-29a2-d002-546f-e3104186bb51
+    udp: true
+    sni: kingrayking-rayspace.hf.space
+    network: ws
+    client-fingerprint: chrome
+    ws-opts:
+      path: /02ceef15
+      headers:
+        Host: kingrayking-rayspace.hf.space
+
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies:
+      - Hug-VLESS
+      - Hug-Trojan
+      - DIRECT
+
+rules:
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy
